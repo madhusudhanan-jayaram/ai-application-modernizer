@@ -1,27 +1,37 @@
 # Product Requirements Document (PRD)
 
 ## Overview
-This PRD describes the requirements for a LangChain-driven application that accepts a desired technology stack and produces a generated application using local LLM agents. The system will read the PRD from the inputs directory and generate a repo map and risk register without needing a repository URL.
+This project aims to build a self‑hosted application generator that uses a Streamlit front‑end and a LangChain-driven orchestration layer. The tool accepts either a GitHub repository URL or a standalone product requirements document (PRD) as input and produces a complete, modern code scaffold—comprising backend and frontend components, supporting documentation, and a downloadable ZIP archive. All language model inference is performed locally via an on‑prem LLM (e.g., Ollama), ensuring privacy and offline operation.
+
+## Goals & Objectives
+- Enable developers to instantly transform legacy codebases or high-level specifications into clean, modern application scaffolds.
+- Provide a Streamlit UI for input of repository URL or PRD and desired stack.
+- Use LangChain to orchestrate a sequence of LLM agents that analyse, plan, and generate the code.
+- Produce backend and frontend scaffolds, documentation, and package them into a ZIP.
 
 ## Inputs
-- **Target Stack**: The desired technology stack for the generated application (e.g., React + FastAPI, Next.js).
-- **PRD File**: This file (`inputs/input_prd.md`) describing the desired functionality and constraints.
+- **Repository URL**: Optional GitHub link to analyse; if omitted, operate solely from PRD.
+- **Standalone PRD**: If no repository is provided, this document defines the functionality and constraints.
+- **Target Stack**: Desired technology stack (e.g., React + FastAPI, Next.js + Node).
+- **Additional Params**: Optional configurations (auth type, database, API style).
 
 ## Outputs
-- **Generated Codebase**: Backend and frontend scaffolding for the selected stack.
-- **PRD.md** and **README.md**: Generated product specification and documentation.
-- **Zip Bundle**: A compressed archive containing the generated code and documentation.
+- **Backend Scaffold**: Generated backend code for the selected stack.
+- **Frontend Scaffold**: Generated frontend code with API integration.
+- **Documentation**: README.md and any additional docs.
+- **Repo Map / Risk Register**: Analysis artifacts summarising the input.
+- **ZIP Bundle**: Package containing all generated code and docs.
 
 ## Agent Workflow
-1. **PRD Pathfinder**: Reads this PRD and produces `artifacts/repo_map.md` and `artifacts/risk_register.md` based solely on the content.
-2. **MVP PRD Architect**: Converts the repo map into a structured `PRD.md`.
-3. **Task Breakdown Lead**: Breaks the PRD into actionable tasks (`tasks.json`).
-4. **Backend Builder**: Creates backend scaffolding according to the tasks.
-5. **Frontend Builder**: Creates frontend scaffolding according to the tasks.
-6. **Docs Packager**: Generates a README and any additional documentation.
-7. **Integrator QA Gate**: Validates that the generated application components align and run correctly.
+1. **PRD Pathfinder** – Reads this PRD (or the provided repository) and produces `repo_map.md` and `risk_register.md`.
+2. **PRD Architect** – Converts the analysis into a structured `PRD.md`.
+3. **Task Planner** – Produces `tasks.json` with ordered tasks and dependencies.
+4. **Backend Builder** – Generates backend scaffolding.
+5. **Frontend Builder** – Generates frontend scaffolding.
+6. **Docs Packager** – Produces README and docs.
+7. **Integrator QA Gate** – Validates the generated application and ensures alignment.
 
 ## Success Criteria
-- The generated application scaffolding matches the target stack specified in this PRD.
-- The documentation clearly explains how to run and use the generated application.
-- All generated artifacts are packaged into a downloadable ZIP file.
+- The generated application scaffolding matches the target stack.
+- Documentation clearly explains how to run the generated app.
+- All artifacts are packaged into a downloadable ZIP.
